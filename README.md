@@ -91,7 +91,47 @@ Open **http://localhost:5173** in your browser.
 
 ---
 
-## API Reference
+## Deployment (Neon + Render + Vercel — all free)
+
+### Step 1 — Database on Neon
+
+1. Sign up at [neon.tech](https://neon.tech) → **Create Project** → name it `sbu-dining`
+2. Copy the **Connection String** (looks like `postgresql://user:pass@ep-xxx.neon.tech/neondb?sslmode=require`)
+3. Open the Neon **SQL Editor** and run both files:
+   ```sql
+   -- paste contents of db/schema.sql, then:
+   -- paste contents of db/seed.sql
+   ```
+
+### Step 2 — Backend on Render
+
+1. Go to [render.com](https://render.com) → **New → Web Service**
+2. Connect your GitHub repo, set **Root Directory** → `backend`
+3. Settings:
+   - **Build Command:** `npm install`
+   - **Start Command:** `npm start`
+   - **Environment:** Node
+4. Add **Environment Variables:**
+   | Key | Value |
+   |-----|-------|
+   | `DATABASE_URL` | (paste your Neon connection string) |
+   | `NODE_ENV` | `production` |
+   | `PORT` | `10000` |
+5. Deploy → copy the service URL e.g. `https://sbu-dining-api.onrender.com`
+
+### Step 3 — Frontend on Vercel
+
+1. Go to [vercel.com](https://vercel.com) → **New Project** → import your GitHub repo
+2. Set **Root Directory** → `frontend`
+3. Add **Environment Variable:**
+   | Key | Value |
+   |-----|-------|
+   | `VITE_API_URL` | `https://sbu-dining-api.onrender.com` |
+4. Deploy → your app is live at `https://your-project.vercel.app`
+
+> **Note:** Render's free tier spins down after 15 min of inactivity. The first request after sleep takes ~30s. Upgrade to a paid tier ($7/mo) to keep it always-on.
+
+
 
 | Endpoint | Description |
 |---|---|
